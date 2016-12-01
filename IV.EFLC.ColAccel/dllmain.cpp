@@ -282,7 +282,7 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID /*lpReserved*/)
 {
 	if (reason == DLL_PROCESS_ATTACH)
 	{
-		dwCurrentEpisode = *hook::pattern("A1 ? ? ? ? 56 57 8B ? ? ? ? 01 A3").get(0).get<uint32_t*>(1);
+		dwCurrentEpisode = *hook::pattern("83 3D ? ? ? ? 02 6A 01 75 ? 8D 54 24 1C").get(0).get<uint32_t*>(2);
 		dw_0xF3F224 = *hook::pattern("A3 ? ? ? ? F3 0F 11 05 ? ? ? ? F3 0F 11 05 ? ? ? ? F3 0F 11 05").get(2).get<uint32_t>(1);
 		dw_0x16D7028 = *hook::pattern("A1 ? ? ? ? 83 EC 1C 56 33 F6 39 70 08").get(0).get<uint32_t>(1);
 		dw_0xF2AAA0 = *hook::pattern("A3 ? ? ? ? E8 ? ? ? ? 6A 30").get(0).get<uint32_t>(1);

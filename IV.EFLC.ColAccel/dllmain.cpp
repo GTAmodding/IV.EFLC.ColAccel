@@ -268,7 +268,7 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID /*lpReserved*/)
 	if (reason == DLL_PROCESS_ATTACH)
 	{
 		dw_0xF3F224 = *hook::pattern("A3 ? ? ? ? F3 0F 11 05 ? ? ? ? F3 0F 11 05 ? ? ? ? F3 0F 11 05").get(2).get<uint32_t>(1);
-		dw_0x16D7028 = *hook::pattern("80 24 30 FB").get(1).get<uint32_t>(6);
+		dw_0x16D7028 = *hook::pattern("8B 0D ? ? ? ? 83 C6 01 3B 71 08").get(3).get<uint32_t>(2);
 		dw_0xF2AAA0 = *hook::pattern("A3 ? ? ? ? E8 ? ? ? ? 6A 30").get(0).get<uint32_t>(1);
 		dw_0x96FD00 = (uint32_t)hook::pattern("8B 4C 24 08 8B 44 24 0C 53 57 8B 38 6A 00 51").get(0).get<uint32_t>(0);
 		dw_0x15E3698 = *hook::pattern("8B 15 ? ? ? ? 53 56 8B 72 08 33 C0 85 F6 57").get(5).get<uint32_t>(2);
@@ -280,10 +280,10 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID /*lpReserved*/)
 		dw_0xC0A170 = (uint32_t)pattern.get(1).get<uint32_t>(0);
 
 		//////////////////////////////////////////////////////
-		uint32_t dw_0x7BDBF0 = (uint32_t)hook::pattern("8B 44 24 04 6A 00 50 E8 ? ? ? ? 83 C4 08 C3").get(0).get<uint32_t>(0);
+		uint32_t dw_0x7BDBF0 = (uint32_t)hook::pattern("E8 ? ? ? ? 83 C4 04 50 E8 ? ? ? ? 64 8B").get(0).get<uint32_t>(0);
 		uint32_t dw_0x98E850 = (uint32_t)hook::pattern("55 8B EC 83 E4 F0 8B 45 08 F3 0F 10 41 20").get(0).get<uint32_t>(0);
 		uint32_t dw_0x98AAE0 = (uint32_t)hook::pattern("8B 44 24 04 89 44 24 04 66 A1 ? ? ? ? 66 85 C0").get(0).get<uint32_t>(0);
-		NatHash = (uint32_t(__cdecl *)(const char* str))dw_0x7BDBF0;
+		NatHash = (uint32_t(__cdecl *)(const char* str))(injector::GetBranchDestination(dw_0x7BDBF0, true).as_int());
 		SetBoundsFromShape_loc = dw_0x98E850;
 		GetModelInfo_loc = dw_0x98AAE0;
 

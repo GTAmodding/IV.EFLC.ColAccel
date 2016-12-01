@@ -19,6 +19,7 @@ CStreamingTypeManager* streamingTypes;
 FILE* g_colCacheHandle = nullptr;
 DWORD SetBoundsFromShape_loc;
 DWORD GetModelInfo_loc;
+uint32_t* dwCurrentEpisode;
 
 std::map<uint32_t, uint32_t> g_streamHashes;
 std::unordered_map<uint16_t, uint32_t> staticBoundHashesReverse;
@@ -126,7 +127,19 @@ void PreloadCollisions()
 	}
 
 	// load existing collision data
-	const char* cacheFileName = ".\\colCache.dat";
+	const char* cacheFileName = nullptr;
+	const char* cacheFileName_dlc0 = ".\\colCache.dat";
+	const char* cacheFileName_dlc1 = ".\\colCache_tlad.dat";
+	const char* cacheFileName_dlc2 = ".\\colCache_tbogt.dat";
+
+	if (*dwCurrentEpisode == 2)
+		cacheFileName = cacheFileName_dlc2;
+	else
+		if (*dwCurrentEpisode == 1)
+			cacheFileName = cacheFileName_dlc1;
+		else
+			cacheFileName = cacheFileName_dlc0;
+
 	auto devHandle = fopen(cacheFileName, "rb");
 
 	staticBoundHashesReverse.clear();
@@ -182,9 +195,11 @@ void PreloadCollisions()
 						uint16_t colId = it->second;
 
 						ColPoolItem* item = colPool->GetAt<ColPoolItem>(colId);
-						fread(item->floaters, sizeof(item->floaters), 1, devHandle);
-
-						g_isCachedSet.insert((*(int*)dw_0xF3F224 << 24) | colId);
+						if (item != nullptr)
+						{
+							fread(item->floaters, sizeof(item->floaters), 1, devHandle);
+							g_isCachedSet.insert((*(int*)dw_0xF3F224 << 24) | colId);
+						}
 					}
 					else
 					{
@@ -267,11 +282,14 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID /*lpReserved*/)
 {
 	if (reason == DLL_PROCESS_ATTACH)
 	{
+		dwCurrentEpisode = *hook::pattern("A1 ? ? ? ? 56 57 8B ? ? ? ? 01 A3").get(0).get<uint32_t*>(1);
 		dw_0xF3F224 = *hook::pattern("A3 ? ? ? ? F3 0F 11 05 ? ? ? ? F3 0F 11 05 ? ? ? ? F3 0F 11 05").get(2).get<uint32_t>(1);
-		dw_0x16D7028 = *hook::pattern("8B 0D ? ? ? ? 83 C6 01 3B 71 08").get(3).get<uint32_t>(2);
+		dw_0x16D7028 = *hook::pattern("A1 ? ? ? ? 83 EC 1C 56 33 F6 39 70 08").get(0).get<uint32_t>(1);
 		dw_0xF2AAA0 = *hook::pattern("A3 ? ? ? ? E8 ? ? ? ? 6A 30").get(0).get<uint32_t>(1);
 		dw_0x96FD00 = (uint32_t)hook::pattern("8B 4C 24 08 8B 44 24 0C 53 57 8B 38 6A 00 51").get(0).get<uint32_t>(0);
-		dw_0x15E3698 = *hook::pattern("8B 15 ? ? ? ? 53 56 8B 72 08 33 C0 85 F6 57").get(5).get<uint32_t>(2);
+		auto CPhysicsStore = hook::pattern("E8 ? ? ? ? 8B 0D ? ? ? ? 8B F0 51 56 E8 ? ? ? ? 83 C4 0C").get(1).get<uint32_t>(0);
+		auto getEntryByKey = injector::GetBranchDestination(CPhysicsStore, true).as_int();
+		dw_0x15E3698 = *(uintptr_t*)(getEntryByKey + 2);
 		dw_0xEBB998 = *hook::pattern("C7 07 ? ? ? ? 74 ? 64 8B 0D 2C 00 00 00 8B 11 8B 4A 08 8B 01").get(0).get<uint32_t>(2);
 		dw_0xF411C1 = *hook::pattern("80 3D ? ? ? ? 00 A3 ? ? ? ? A3 ? ? ? ? 74 ? 68").get(0).get<uint32_t>(2);
 		dw_0xF411C2 = *hook::pattern("C6 05 ? ? ? ? 01 75 ? C6 05 ? ? ? ? 00 C3").get(0).get<uint32_t>(2);

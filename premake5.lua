@@ -1,5 +1,7 @@
 workspace "IV.EFLC.ColAccel"
    configurations { "Release", "Debug" }
+   platforms { "Win32" }
+   architecture "x32"
    location "build"
    
    defines { "rsc_CompanyName=\"ThirteenAG\"" }

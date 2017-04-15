@@ -2,7 +2,6 @@ version: 1.{build}
 skip_tags: true
 image: Visual Studio 2017
 configuration: Release
-platform: x86
 install:
 - cmd: >-
     git submodule update --init --recursive

@@ -295,30 +295,30 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID /*lpReserved*/)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
-        dwCurrentEpisode = *hook::pattern("83 3D ? ? ? ? ? 6A 01 8D 44 24 3C 50").get(0).get<uint32_t*>(2); //+
-        dw_0xF3F224 = (uint32_t)hook::pattern("A3 ? ? ? ? C7 05 ? ? ? ? ? ? ? ? C7 05 ? ? ? ? ? ? ? ? C7 05 ? ? ? ? ? ? ? ? C3").get(0).get<uint32_t>(1); //+
-        dw_0x16D7028 = (uint32_t)hook::pattern("8B 0D ? ? ? ? 83 EC 1C 56 33 F6 39 71 08 0F 8E").get(0).get<uint32_t>(2); //+
-        dw_0xF2AAA0 = (uint32_t)hook::pattern("A3 ? ? ? ? E8 ? ? ? ? 6A 30").get(0).get<uint32_t>(1); //+
-        dw_0x96FD00 = (uint32_t)hook::pattern("8B 44 24 0C 53 57 8B 38 6A 00 FF 74 24 14 E8 ? ? ? ? 8B D8 83 C4 08").get(0).get<uint32_t>(0); //+
-        auto CPhysicsStore = hook::pattern("E8 ? ? ? ? FF 35 ? ? ? ? 8B F0 56 E8 ? ? ? ? 83 C4 0C 83 F8 FF").get(0).get<uint32_t>(0); //+
+        dwCurrentEpisode = *hook::pattern("83 3D ? ? ? ? ? 6A 01 8D 44 24 3C 50").get(0).get<uint32_t*>(2);
+        dw_0xF3F224 = (uint32_t)hook::pattern("A3 ? ? ? ? C7 05 ? ? ? ? ? ? ? ? C7 05 ? ? ? ? ? ? ? ? C7 05 ? ? ? ? ? ? ? ? C3").get(0).get<uint32_t>(1);
+        dw_0x16D7028 = (uint32_t)hook::pattern("8B 0D ? ? ? ? 83 EC 1C 56 33 F6 39 71 08 0F 8E").get(0).get<uint32_t>(2);
+        dw_0xF2AAA0 = (uint32_t)hook::pattern("A3 ? ? ? ? E8 ? ? ? ? 6A 30").get(0).get<uint32_t>(1);
+        dw_0x96FD00 = (uint32_t)hook::pattern("8B 44 24 0C 53 57 8B 38 6A 00 FF 74 24 14 E8 ? ? ? ? 8B D8 83 C4 08").get(0).get<uint32_t>(0);
+        auto CPhysicsStore = hook::pattern("E8 ? ? ? ? FF 35 ? ? ? ? 8B F0 56 E8 ? ? ? ? 83 C4 0C 83 F8 FF").get(0).get<uint32_t>(0);
         auto getEntryByKey = injector::GetBranchDestination(CPhysicsStore, true).as_int();
         dw_0x15E3698 = (uint32_t)(getEntryByKey + 2);
-        dw_0xEBB998 = (uint32_t)hook::pattern("C7 06 ? ? ? ? 74 0B 8B 07 56 8B 48 08 8B 01 FF 50 0C 5F 8B C6 5E C2 04 00").get(21).get<uint32_t>(2); //+
-        dw_0xF411C1 = *hook::pattern("80 3D ? ? ? ? ? A3 ? ? ? ? A3 ? ? ? ? 74 4C 68").get(0).get<uint32_t>(2); //+
-        dw_0xF411C2 = *hook::pattern("C6 05 ? ? ? ? 01 75 ? C6 05 ? ? ? ? 00 C3").get(0).get<uint32_t>(2); //+
-        auto pattern = hook::pattern("80 3D ? ? ? ? ? 0F 84 ? ? ? ? 80 3D ? ? ? ? ? 0F 85 ? ? ? ? C3"); //+
+        dw_0xEBB998 = (uint32_t)hook::pattern("56 8B F1 8B 96 ? ? ? ? C7 06 ? ? ? ? 85 D2 74 11 64 A1 ? ? ? ? 52 8B 00 8B 48 08 8B 01 FF 50 0C C7 06 ? ? ? ? 5E C3").get(0).get<uint32_t>(38);
+        dw_0xF411C1 = *hook::pattern("80 3D ? ? ? ? ? A3 ? ? ? ? A3 ? ? ? ? 74 4C 68").get(0).get<uint32_t>(2);
+        dw_0xF411C2 = *hook::pattern("C6 05 ? ? ? ? 01 75 ? C6 05 ? ? ? ? 00 C3").get(0).get<uint32_t>(2);
+        auto pattern = hook::pattern("80 3D ? ? ? ? ? 0F 84 ? ? ? ? 80 3D ? ? ? ? ? 0F 85 ? ? ? ? C3");
         dw_0x9704A0 = (uint32_t)pattern.get(1).get<uint32_t>(0);
         dw_0xC0A170 = (uint32_t)pattern.get(0).get<uint32_t>(0);
 
         //////////////////////////////////////////////////////
-        uint32_t dw_0x7BDBF0 = (uint32_t)hook::pattern("E8 ? ? ? ? 8B 0D ? ? ? ? 83 C4 04 8B 51 08 33 F6 89 44 24 14 85 D2").get(0).get<uint32_t>(0); //+
-        uint32_t dw_0x98E850 = (uint32_t)hook::pattern("55 8B EC 83 E4 F8 8B 45 08 F3 0F 10 41").get(0).get<uint32_t>(0); //+
-        uint32_t dw_0x98AAE0 = (uint32_t)hook::pattern("8B 44 24 04 89 44 24 04 66 A1 ? ? ? ? 66 85 C0").get(1).get<uint32_t>(0); //+
+        uint32_t dw_0x7BDBF0 = (uint32_t)hook::pattern("E8 ? ? ? ? 8B 0D ? ? ? ? 83 C4 04 8B 51 08 33 F6 89 44 24 14 85 D2").get(0).get<uint32_t>(0);
+        uint32_t dw_0x98E850 = (uint32_t)hook::pattern("55 8B EC 83 E4 F8 8B 45 08 F3 0F 10 41").get(0).get<uint32_t>(0);
+        uint32_t dw_0x98AAE0 = (uint32_t)hook::pattern("8B 44 24 04 89 44 24 04 66 A1 ? ? ? ? 66 85 C0").get(1).get<uint32_t>(0);
         NatHash = (uint32_t(__cdecl *)(const char* str))(injector::GetBranchDestination(dw_0x7BDBF0, true).as_int());
         SetBoundsFromShape_loc = dw_0x98E850;
         GetModelInfo_loc = dw_0x98AAE0;
 
-        uint32_t dw_0x8D8772 = (uint32_t)hook::pattern("E8 ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? 8B 15 ? ? ? ? 33 F6 0F B7 4A 04 85 C9 7E 1B 8B 3A 8D 87").get(0).get<uint32_t>(0); //+
+        uint32_t dw_0x8D8772 = (uint32_t)hook::pattern("E8 ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? 8B 15 ? ? ? ? 33 F6 0F B7 4A 04 85 C9 7E 1B 8B 3A 8D 87").get(0).get<uint32_t>(0);
         injector::MakeNOP(dw_0x8D8772, 5, true);
         injector::MakeCALL(dw_0x8D8772 + 5, PreloadCollisions, true);
 
@@ -332,20 +332,20 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID /*lpReserved*/)
         //        regs.esp &= 0xFFFFFFF0;
         //    }
         //}; injector::MakeInline<CreateStaticCollisionBuildingHook>(dw_0xC09721);
-        pattern = hook::pattern("50 E8 ? ? ? ? 8B 4E 30 83 C4 08 89 04 B9"); //+
+        pattern = hook::pattern("50 E8 ? ? ? ? 8B 4E 30 83 C4 08 89 04 B9");
         hbsub_BA3430.fun = injector::MakeCALL(pattern.get_first(1), sub_BA3430).get();
-        pattern = hook::pattern("E8 ? ? ? ? 83 C4 08 89 46 30 5F 5E 83 C4 08 C3"); //+
+        pattern = hook::pattern("E8 ? ? ? ? 83 C4 08 89 46 30 5F 5E 83 C4 08 C3");
         hbsub_BA3430.fun = injector::MakeCALL(pattern.get_first(0), sub_BA3430).get();
 
-        uint32_t dw_0x96FF48 = (uint32_t)hook::pattern("68 ? ? ? ? E8 ? ? ? ? 33 C0 39 06 5E 0F 95 C0 C3").get(0).get<uint32_t>(1); //+
+        uint32_t dw_0x96FF48 = (uint32_t)hook::pattern("68 ? ? ? ? E8 ? ? ? ? 33 C0 39 06 5E 0F 95 C0 C3").get(0).get<uint32_t>(1);
         injector::WriteMemory(dw_0x96FF48, SetDynamicCollisionDataHook, true);
 
-        uint32_t dw_0x832E80 = (uint32_t)hook::pattern("8B 44 24 08 6B C0 64 8B 80").get(1).get<uint32_t>(0); //+
+        uint32_t dw_0x832E80 = (uint32_t)hook::pattern("8B 44 24 08 6B C0 64 B9 ? ? ? ? 8B 80 ? ? ? ? 03 44 24 04 50 E8 ? ? ? ? C3").get(1).get<uint32_t>(0);
         injector::MakeJMP(dw_0x832E80, IsStreamingModuleItemCached, true);
 
         // img index entry add function, call to file handler registration
-        uint32_t dw_0x1227F40 = (uint32_t)hook::pattern("B9 ? ? ? ? E8 ? ? ? ? 8B E8 33 FF 85 ED 7E 36 8D 64 24 00").get(0).get<uint32_t>(1); //+
-        uint32_t dw_0xBCC370 = (uint32_t)hook::pattern("50 8B 86 ? ? ? ? FF D0 83 C4 04 83 F8 FF").get(0).get<uint32_t>(0); //+
+        uint32_t dw_0x1227F40 = (uint32_t)hook::pattern("B9 ? ? ? ? E8 ? ? ? ? 8B E8 33 FF 85 ED 7E 36 8D 64 24 00").get(0).get<uint32_t>(1);
+        uint32_t dw_0xBCC370 = (uint32_t)hook::pattern("50 8B 86 ? ? ? ? FF D0 83 C4 04 83 F8 FF").get(0).get<uint32_t>(0);
         streamingTypes = (CStreamingTypeManager**)dw_0x1227F40;
         struct StoreImgEntryNameStub
         {
